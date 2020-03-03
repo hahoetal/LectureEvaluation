@@ -33,7 +33,9 @@ def create(request):
         new_eval = Evals()
         new_eval.author = request.user
         new_eval.title = request.POST['title']
-        new_eval.lect = Lecture.objects.get(lectureName = request.POST['lect_name'])
+        new_eval.lect = Lecture.objects.filter(lectureName = request.POST['lect_name']).first()
+        # Lecture 모델의 객체 중 lect_name(<input> 이름)과 lectureName(모델)이 같은 것 가지고 와서 첫번째 것 넣기
+        # MultipleObjectsReturned 오류가 나서 코드 변경... 왜 이런지는 아직은 잘 모르겠다.
         new_eval.pub_date = timezone.datetime.now()
         new_eval.body = request.POST['body']
         new_eval.save()
